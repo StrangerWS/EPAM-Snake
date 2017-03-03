@@ -23,8 +23,7 @@ public class MainMenu {
         newGame.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                window.setVisible(false);
-                Game.run();
+                Game.run(window);
             }
         });
 

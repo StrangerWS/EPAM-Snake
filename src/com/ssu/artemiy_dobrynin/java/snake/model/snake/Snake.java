@@ -1,20 +1,24 @@
 package com.ssu.artemiy_dobrynin.java.snake.model.snake;
 
+import com.ssu.artemiy_dobrynin.java.snake.model.Entity;
+
 /**
  * Created by DobryninAM on 17.02.2017.
  */
-public class Snake {
+public class Snake extends Entity {
     public int direction = 0;
-    public int length = 3;
+    public int length = 10;
 
     public int[] snakeX = new int[100];
     public int[] snakeY = new int[100];
 
-    public Snake(int x0, int y0, int x1, int y1) {
-        snakeX[0] = x0;
-        snakeY[0] = y0;
-        snakeX[1] = x1;
-        snakeY[1] = y1;
+    public Snake(int x0, int y0) {
+        for (int i = 0; i < length; i++) {
+            snakeX[i] = x0 + i;
+        }
+        for (int i = 0; i < length; i++) {
+            snakeY[i] = y0;
+        }
     }
 
     public void move() {
@@ -31,6 +35,12 @@ public class Snake {
             snakeX[0]--;
         } else if (direction == 3) {
             snakeY[0]--;
+        }
+
+        for (int i = length; i > 0; i--) {
+            if (snakeX[0] == snakeX[i] & snakeY[0] == snakeY[i]) {
+                length = i;
+            }
         }
     }
 }

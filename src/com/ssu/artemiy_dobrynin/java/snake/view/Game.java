@@ -21,15 +21,10 @@ public class Game extends JPanel implements ActionListener {
     public static final int SPEED = 5;
 
     Snake snake = new Snake(10, 10);
-    Timer t = new Timer(1000 / SPEED, this);
 
     public Game() {
         addMouseListener(new SnakeControl(snake));
         setFocusable(true);
-    }
-
-    private void start(){
-        t.start();
     }
 
     public void paint(Graphics g) {
@@ -45,15 +40,13 @@ public class Game extends JPanel implements ActionListener {
         }
         g.setColor(new Color(252, 255, 0));
         for (int i = 0; i < snake.length; i++) {
-            g.fillOval(snake.snakeX[i] * SCALE + 1, snake.snakeY[i] * SCALE + 1, SCALE - 1, SCALE - 1);
-
-//            if (i == 0) {
-//                g.fillOval(snake.snakeX[i]*SCALE+1, snake.snakeY[i]*SCALE+1, SCALE/2, SCALE/2);
-//            } else if (i == snake.length - 1){
-//                g.fillOval(snake.snakeX[i]*SCALE+1, snake.snakeY[i]*SCALE+1, SCALE/4, SCALE/4);
-//            } else {
-//                g.fillOval(snake.snakeX[i]*SCALE+1, snake.snakeY[i]*SCALE+1, SCALE/3, SCALE/3);
-//            }
+            if (i == 0) {
+                g.fillOval(snake.snakeX[i] * SCALE + 1 + SCALE / 4, snake.snakeY[i] * SCALE + 1 + SCALE / 4, SCALE / 2, SCALE / 2);
+            } else if (i == snake.length - 1) {
+                g.fillOval(snake.snakeX[i] * SCALE + 1 + 3 * SCALE / 8, snake.snakeY[i] * SCALE + 1 + 3 * SCALE / 8, SCALE / 4, SCALE / 4);
+            } else {
+                g.fillOval(snake.snakeX[i] * SCALE + 1 + SCALE / 3, snake.snakeY[i] * SCALE + 1 + SCALE / 3, SCALE / 3, SCALE / 3);
+            }
         }
     }
 
@@ -64,21 +57,26 @@ public class Game extends JPanel implements ActionListener {
         JButton stop = new JButton("Stop");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setResizable(false);
-        frame.setSize(WIDTH * SCALE + 47, HEIGHT * SCALE - 3);
+        frame.setSize(WIDTH * SCALE + 7, HEIGHT * SCALE + 1);
         frame.setLocationRelativeTo(null);
         parent.setVisible(false);
 
-        JPanel panel = new JPanel();
-        panel.add(new Game());
-        panel.add(start);
-        panel.add(stop);
+        JPanel bottomPanel = new JPanel();
+        JPanel parentPanel = new JPanel();
+        parentPanel.setSize(WIDTH * SCALE + 47, HEIGHT * SCALE - 3);
+        parentPanel.setLayout(new BorderLayout());
+        parentPanel.add(new Game(), BorderLayout.CENTER);
+        parentPanel.add(bottomPanel, BorderLayout.SOUTH);
+        bottomPanel.setLayout(new FlowLayout());
+        bottomPanel.add(start);
+        bottomPanel.add(stop);
         start.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                start();
+                new Thread(snake).start();
             }
         });
-        frame.getContentPane().add(panel);
+        frame.getContentPane().add(parentPanel, BorderLayout.CENTER);
         frame.setVisible(true);
 
     }

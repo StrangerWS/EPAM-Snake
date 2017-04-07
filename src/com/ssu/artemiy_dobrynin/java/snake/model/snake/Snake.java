@@ -7,7 +7,7 @@ import com.ssu.artemiy_dobrynin.java.snake.model.Entity;
  */
 public class Snake extends Entity {
     public int direction = 0;
-    public int length = 10;
+    public int length = 3;
 
     public int[] snakeX = new int[100];
     public int[] snakeY = new int[100];
@@ -41,6 +41,16 @@ public class Snake extends Entity {
             if (snakeX[0] == snakeX[i] & snakeY[0] == snakeY[i]) {
                 length = i;
             }
+        }
+    }
+
+    @Override
+    public void run(){
+        move();
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 }
